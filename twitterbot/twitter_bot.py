@@ -152,5 +152,5 @@ class TwitterBot(object):
         return mentions_processed
 
     def post_message(self):
-            quotation = self.retrieve_quotation()
-            self.post_quotation(quotation)
+        quotation = self.retrieve_quotation()
+        self.post_quotation(quotation)
