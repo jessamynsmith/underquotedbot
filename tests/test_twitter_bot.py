@@ -16,6 +16,17 @@ class TestTwitterBot(unittest.TestCase):
         self.bot = TwitterBot(redis_url='redis://:@localhost:6379/10',
                               quotation_url='http://invalid/quotation/?')
 
+    @patch('os.environ.get')
+    @patch('redis.Redis.from_url')
+    def test_constructor_no_urls(self, mock_from_url, mock_env_get):
+        mock_from_url.return_value = None
+        mock_env_get.return_value = 'bogus'
+
+        bot = TwitterBot()
+
+        self.assertEqual(None, bot.redis)
+        self.assertEqual('bogus', bot.BASE_URL)
+
     def test_tokenize_short(self):
         messages = self.bot.tokenize(self.MESSAGE, 80)
 
@@ -234,3 +245,11 @@ class TestReplyToMentions(unittest.TestCase):
         self.assertEqual(expected_calls, self.bot.post_quotation.mock_calls)
         self.bot.redis.get.assert_called_once_with('since_id')
         self.bot.redis.set.assert_called_once_with('since_id', '123')
+
+    def test_post_message(self):
+        self.bot.post_quotation.return_value = 0
+
+        result = self.bot.post_message()
+
+        self.assertEqual(0, result)
+        self.bot.post_quotation.assert_called_once_with("'Tis better")

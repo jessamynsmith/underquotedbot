@@ -27,7 +27,7 @@ class TwitterBot(object):
                                           CONSUMER_KEY, CONSUMER_SECRET))
 
         if not redis_url:
-            redis_url = os.getenv('REDISTOGO_URL')
+            redis_url = os.environ.get('REDISTOGO_URL')
         self.redis = redis.Redis.from_url(redis_url)
 
     def tokenize(self, message, message_length, mentioner=None):
@@ -153,4 +153,4 @@ class TwitterBot(object):
 
     def post_message(self):
         quotation = self.retrieve_quotation()
-        self.post_quotation(quotation)
+        return self.post_quotation(quotation)
