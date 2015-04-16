@@ -16,3 +16,11 @@ script:
 # coverage!
 after_success:
     coveralls
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: C5MxDoGaz+//EWWsbKLUp0jHSAj96e8lQ4x1r6brDmDrOnxZm/8cX0twLEOLem4WG7cId29o7ZIFO7lmaWo1RMNyShvbzesTChlUJHCP5ZhoGQJPxmVjJzhyNYfrNXzF0vd2iTZw9k6PbPBKpGHnhWSfWbdyqzeIAvmSPAJmLSM=
+  app: uqtwitterbot
+  on:
+    repo: jessamynsmith/twitterbot
