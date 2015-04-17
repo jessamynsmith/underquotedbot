@@ -167,7 +167,7 @@ class TestTwitterBot(unittest.TestCase):
     def test_post_quotation_unknown_error(self):
         error = TwitterHTTPError(
             MagicMock(headers={'Content-Encoding': ''}), '', '', [])
-        error.response_data = {'errors': [{'code': 187}]}
+        error.response_data = b'{"errors": [{"code": 187}]}'
         mock_update = MagicMock(side_effect=error)
         mock_statuses = MagicMock()
         mock_statuses.update = mock_update
@@ -196,7 +196,7 @@ class TestReplyToMentions(unittest.TestCase):
         result = self.bot.reply_to_mentions()
 
         self.assertEqual(0, result)
-        self.bot.twitter.statuses.mentions_timeline.assert_called_with()
+        self.bot.twitter.statuses.mentions_timeline.assert_called_with(count=200)
 
     def test_reply_to_mentions_no_mentions_with_since_id(self):
         self.bot.twitter.statuses.mentions_timeline.return_value = []
@@ -206,7 +206,7 @@ class TestReplyToMentions(unittest.TestCase):
 
         self.assertEqual(0, result)
         self.bot.twitter.statuses.mentions_timeline.assert_called_with(
-            since_id='3')
+            count=200, since_id='3')
         self.bot.redis.get.assert_called_once_with('since_id')
 
     def test_reply_to_mentions_error(self):
@@ -220,7 +220,7 @@ class TestReplyToMentions(unittest.TestCase):
         result = self.bot.reply_to_mentions()
 
         self.assertEqual(1, result)
-        self.bot.twitter.statuses.mentions_timeline.assert_called_once_with()
+        self.bot.twitter.statuses.mentions_timeline.assert_called_once_with(count=200)
         self.assertEqual(11, len(self.bot.post_quotation.mock_calls))
         self.assertEqual(call("'Tis better", '@jessamyn', '123'),
                          self.bot.post_quotation.mock_calls[0])
@@ -240,7 +240,7 @@ class TestReplyToMentions(unittest.TestCase):
         result = self.bot.reply_to_mentions()
 
         self.assertEqual(1, result)
-        self.bot.twitter.statuses.mentions_timeline.assert_called_once_with()
+        self.bot.twitter.statuses.mentions_timeline.assert_called_once_with(count=200)
         expected_calls = [call("'Tis better", '@jessamyn', '123')]
         self.assertEqual(expected_calls, self.bot.post_quotation.mock_calls)
         self.bot.redis.get.assert_called_once_with('since_id')

@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 
@@ -9,6 +10,12 @@ from twitter.api import TwitterHTTPError
 
 logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s',
                     level=logging.INFO)
+
+
+def get_redis(redis_url=None):
+    if not redis_url:
+        redis_url = os.getenv('REDISTOGO_URL')
+    return redis.Redis.from_url(redis_url)
 
 
 class TwitterBot(object):
@@ -25,10 +32,7 @@ class TwitterBot(object):
 
         self.twitter = Twitter(auth=OAuth(OAUTH_TOKEN, OAUTH_SECRET,
                                           CONSUMER_KEY, CONSUMER_SECRET))
-
-        if not redis_url:
-            redis_url = os.environ.get('REDISTOGO_URL')
-        self.redis = redis.Redis.from_url(redis_url)
+        self.redis = get_redis(redis_url)
 
     def tokenize(self, message, message_length, mentioner=None):
         if mentioner:
@@ -105,15 +109,16 @@ class TwitterBot(object):
                 self.twitter.statuses.update(status=message,
                                              in_reply_to_status_id=mention_id)
             except TwitterHTTPError as e:
-                code = e.response_data['errors'][0]['code']
-                break
+                logging.error('Unable to post to twitter: %s' % e)
+                response_data = json.loads(e.response_data.decode('utf-8'))
+                code = response_data['errors'][0]['code']
         return code
 
     def reply_to_mentions(self):
         since_id = self.redis.get('since_id')
         logging.debug("Retrieved since_id: %s" % since_id)
 
-        kwargs = {}
+        kwargs = {'count': 200}
         if since_id:
             kwargs['since_id'] = since_id.strip()
 
@@ -121,7 +126,8 @@ class TwitterBot(object):
         logging.info("Retrieved %s mentions" % len(mentions))
 
         mentions_processed = 0
-        for mention in mentions:
+        # We want to process least recent to most recent, so that since_id is set properly
+        for mention in reversed(mentions):
             mention_id = mention['id']
             mentioner = '@%s' % mention['user']['screen_name']
 
