@@ -1,7 +1,7 @@
-twitterbot
-==========
+underquotedbot
+==============
 
-[![Build Status](https://travis-ci.org/jessamynsmith/twitterbot.svg?branch=master)](https://travis-ci.org/jessamynsmith/twitterbot)
+[![Build Status](https://travis-ci.org/jessamynsmith/underquotedbot.svg?branch=master)](https://travis-ci.org/jessamynsmith/underquotedbot)
 [![Coverage Status](https://coveralls.io/repos/jessamynsmith/twitterbot/badge.svg?branch=master)](https://coveralls.io/r/jessamynsmith/twitterbot?branch=master)
 
 Replies to any twitter mentions with a quotation. This project is already set up to be deployed to heroku.
@@ -21,11 +21,11 @@ Development
 
 Get source:
 
-    git clone https://github.com/jessamynsmith/twitterbot
+    git clone https://github.com/jessamynsmith/underquotedbot
 
 Set up virtualenv:
 
-    mkvirtualenv twitterbot --python=/path/to/python3
+    mkvirtualenv underquotedbot --python=/path/to/python3
     pip install -r requirements/development.txt
 
 Run tests:
