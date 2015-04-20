@@ -13,3 +13,10 @@ dependencies:
 test:
   override:
     - tox
+    - coveralls
+
+deployment:
+    production:
+        branch: master
+    heroku:
+      appname: underquotedbot
