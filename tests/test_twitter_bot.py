@@ -2,7 +2,28 @@ import unittest
 from mock import call, patch, MagicMock
 from twitter.api import TwitterHTTPError
 
-from twitter_bot.twitter_bot import main, TwitterBot
+from twitter_bot.twitter_bot import main, Settings, TwitterBot
+
+
+class TestSettings(unittest.TestCase):
+
+    @patch('os.environ.get')
+    def test_constructor_invalid(self, mock_env_get):
+        mock_env_get.return_value = None
+
+        try:
+            Settings()
+            self.fail('Should not be able to construct settings with None values')
+        except ValueError:
+            pass
+
+    @patch('os.environ.get')
+    def test_constructor_valid(self, mock_env_get):
+        mock_env_get.return_value = 'bogus'
+
+        settings = Settings()
+
+        self.assertEqual(['bogus', 'bogus', 'bogus', 'bogus'], settings)
 
 
 class TestTwitterBot(unittest.TestCase):
@@ -13,7 +34,12 @@ class TestTwitterBot(unittest.TestCase):
                     "I don't like labels. Just call me Martina. - Martina Navratilova")
 
     def setUp(self):
-        self.bot = TwitterBot(redis_url='redis://:@localhost:6379/10',
+        self.settings = {'TWITTER_CONSUMER_KEY': 'bogus',
+                         'TWITTER_CONSUMER_SECRET': 'bogus',
+                         'TWITTER_OAUTH_SECRET': 'bogus',
+                         'TWITTER_OAUTH_TOKEN': 'bogus'}
+        self.bot = TwitterBot(self.settings,
+                              redis_url='redis://:@localhost:6379/10',
                               quotation_url='http://invalid/quotation/?')
 
     @patch('os.environ.get')
@@ -22,7 +48,7 @@ class TestTwitterBot(unittest.TestCase):
         mock_from_url.return_value = None
         mock_env_get.return_value = 'bogus'
 
-        bot = TwitterBot()
+        bot = TwitterBot(self.settings)
 
         self.assertEqual(None, bot.redis)
         self.assertEqual('bogus', bot.BASE_URL)
@@ -183,7 +209,12 @@ class TestTwitterBot(unittest.TestCase):
 class TestReplyToMentions(unittest.TestCase):
 
     def setUp(self):
-        self.bot = TwitterBot(redis_url='redis://:@localhost:6379/10',
+        self.settings = {'TWITTER_CONSUMER_KEY': 'bogus',
+                         'TWITTER_CONSUMER_SECRET': 'bogus',
+                         'TWITTER_OAUTH_SECRET': 'bogus',
+                         'TWITTER_OAUTH_TOKEN': 'bogus'}
+        self.bot = TwitterBot(self.settings,
+                              redis_url='redis://:@localhost:6379/10',
                               quotation_url='http://invalid/quotation/?')
         self.bot.twitter.statuses = MagicMock()
         self.bot.retrieve_quotation = MagicMock(return_value="'Tis better")
@@ -255,7 +286,7 @@ class TestReplyToMentions(unittest.TestCase):
         self.bot.post_quotation.assert_called_once_with("'Tis better")
 
     def test_main_no_args(self):
-        result = main([])
+        result = main(self.settings, [])
 
         self.assertEqual(1, result)
 
@@ -265,7 +296,7 @@ class TestReplyToMentions(unittest.TestCase):
         mock_from_url.return_value = None
         mock_post.return_value = 33
 
-        result = main(['', 'bogus'])
+        result = main(self.settings, ['', 'bogus'])
 
         self.assertEqual(2, result)
         self.assertEqual(0, mock_post.call_count)
@@ -276,7 +307,7 @@ class TestReplyToMentions(unittest.TestCase):
         mock_from_url.return_value = None
         mock_post.return_value = 33
 
-        result = main(['', 'post_message'])
+        result = main(self.settings, ['', 'post_message'])
 
         self.assertEqual(33, result)
         mock_post.assert_called_once_with()
@@ -287,7 +318,7 @@ class TestReplyToMentions(unittest.TestCase):
         mock_from_url.return_value = None
         mock_reply.return_value = 0
 
-        result = main(['', 'reply_to_mentions'])
+        result = main(self.settings, ['', 'reply_to_mentions'])
 
         self.assertEqual(0, result)
         mock_reply.assert_called_once_with()

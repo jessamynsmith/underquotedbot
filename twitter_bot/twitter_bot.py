@@ -13,6 +13,19 @@ logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s',
                     level=logging.INFO)
 
 
+class Settings(list):
+
+    def __init__(self):
+        super(Settings, self).__init__()
+        tokens = ('OAUTH_TOKEN', 'OAUTH_SECRET', 'CONSUMER_KEY', 'CONSUMER_SECRET')
+        for token in tokens:
+            key = 'TWITTER_%s' % token
+            value = os.environ.get(key)
+            if not value:
+                raise ValueError("Must set environment variable '%s'" % key)
+            self.append(value)
+
+
 def get_redis(redis_url=None):
     if not redis_url:
         redis_url = os.getenv('REDISTOGO_URL')
@@ -21,18 +34,14 @@ def get_redis(redis_url=None):
 
 class TwitterBot(object):
 
-    def __init__(self, redis_url=None, quotation_url=None):
-        OAUTH_TOKEN = os.environ.get('TWITTER_OAUTH_TOKEN')
-        OAUTH_SECRET = os.environ.get('TWITTER_OAUTH_SECRET')
-        CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY')
-        CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET')
+    def __init__(self, settings, redis_url=None, quotation_url=None):
+        self.DUPLICATE_CODE = 187
+
         if not quotation_url:
             quotation_url = os.environ.get('QUOTATION_URL')
         self.BASE_URL = quotation_url
-        self.DUPLICATE_CODE = 187
 
-        self.twitter = Twitter(auth=OAuth(OAUTH_TOKEN, OAUTH_SECRET,
-                                          CONSUMER_KEY, CONSUMER_SECRET))
+        self.twitter = Twitter(auth=OAuth(*settings))
         self.redis = get_redis(redis_url)
 
     def tokenize(self, message, message_length, mentioner=None):
@@ -162,7 +171,7 @@ class TwitterBot(object):
         return self.post_quotation(quotation)
 
 
-def main(args):
+def main(settings, args):
     error = "You must specify a single command, either 'post_message' or 'reply_to_mentions'"
 
     if len(args) != 2:
@@ -170,7 +179,7 @@ def main(args):
         return 1
 
     command = args[1]
-    bot = TwitterBot()
+    bot = TwitterBot(settings)
 
     result = 0
     if command == 'post_message':
@@ -185,6 +194,6 @@ def main(args):
 
 
 if __name__ == '__main__':
-    res = main(sys.argv)
+    res = main(Settings(), sys.argv)
     if res != 0:
         sys.exit(res)
