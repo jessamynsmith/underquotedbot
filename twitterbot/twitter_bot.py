@@ -87,17 +87,16 @@ class TwitterBot(object):
 
         url = self.BASE_URL
         for hashtag in hashtags:
-            url = '%s&text__icontains=%s' % (url, hashtag)
+            url = '%s&search=%s' % (url, hashtag)
         logging.debug("Trying URL: %s" % url)
         result = requests.get(url)
         logging.debug("Quotation request, status code=%s" % result.status_code)
 
         if result.status_code == 200:
             quotations = result.json()
-            if len(quotations['objects']) > 0:
-                quotation = quotations['objects'][0]
-                message = '%s - %s' % (quotation['text'],
-                                       quotation['author']['name'])
+            if len(quotations['results']) > 0:
+                quotation = quotations['results'][0]
+                message = '%s - %s' % (quotation['text'], quotation['author'])
 
         return message
 
