@@ -5,9 +5,9 @@ dependencies:
     - "py-3.3.5"
     - "py-3.4.2"
   pre:
-#    - bash ./.circleci/install-python-2.6.9.sh
+    - bash ./.circleci/install-python-2.6.9.sh
     - bash ./.circleci/install-python-2.7.9.sh
-#    - bash ./.circleci/install-python-3.3.5.sh
+    - bash ./.circleci/install-python-3.3.5.sh
     - bash ./.circleci/install-python-3.4.2.sh
 
 test:
