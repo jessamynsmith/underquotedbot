@@ -1,7 +1,7 @@
 set -x
 set -e
 
-BUILDROOT=$HOME/pg8000
+BUILDROOT=$HOME/underquotedbot
 
 if [[ ! -e py-3.3.5/bin/python3.3 ]]; then
     wget http://www.python.org/ftp/python/3.3.5/Python-3.3.5.tgz

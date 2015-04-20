@@ -1,7 +1,7 @@
 set -x
 set -e
 
-BUILDROOT=$HOME/pg8000
+BUILDROOT=$HOME/underquotedbot
 
 if [[ ! -e py-2.6.9/bin/python2.6 ]]; then
     wget https://www.python.org/ftp/python/2.6.9/Python-2.6.9.tgz
