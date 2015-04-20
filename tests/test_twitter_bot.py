@@ -83,9 +83,9 @@ class TestTwitterBot(unittest.TestCase):
     @patch('requests.get')
     def test_retrieve_quotation_success(self, mock_get):
         mock_result = MagicMock(status_code=200)
-        mock_result.json.return_value = {'objects': [{
+        mock_result.json.return_value = {'results': [{
             'text': 'Here I stay',
-            'author': {'name': 'Henrietta'}
+            'author': 'Henrietta'
         }]}
         mock_get.return_value = mock_result
 
@@ -97,21 +97,21 @@ class TestTwitterBot(unittest.TestCase):
     @patch('requests.get')
     def test_retrieve_quotation_with_hashtags_success(self, mock_get):
         mock_result = MagicMock(status_code=200)
-        mock_result.json.return_value = {'objects': [{
+        mock_result.json.return_value = {'results': [{
             'text': 'Here I stay.',
-            'author': {'name': 'Henrietta'}
+            'author': 'Henrietta'
         }]}
         mock_get.return_value = mock_result
 
         quotation = self.bot.retrieve_quotation(['stay'])
 
         self.assertEqual('Here I stay. - Henrietta', quotation)
-        mock_get.assert_called_with('http://invalid/quotation/?&text__icontains=stay')
+        mock_get.assert_called_with('http://invalid/quotation/?&search=stay')
 
     @patch('requests.get')
     def test_retrieve_quotation_no_quotations(self, mock_get):
         mock_result = MagicMock(status_code=200)
-        mock_result.json.return_value = {'objects': []}
+        mock_result.json.return_value = {'results': []}
         mock_get.return_value = mock_result
 
         quotation = self.bot.retrieve_quotation([])
@@ -135,8 +135,8 @@ class TestTwitterBot(unittest.TestCase):
         quotation = self.bot.retrieve_quotation(['love', 'hate'])
 
         self.assertEqual('No quotations found matching #love #hate', quotation)
-        mock_get.assert_called_with('http://invalid/quotation/?&text__icontains=love'
-                                    '&text__icontains=hate')
+        mock_get.assert_called_with('http://invalid/quotation/?&search=love'
+                                    '&search=hate')
 
     def test_post_quotation_short_no_mention(self):
         mock_statuses = MagicMock()
