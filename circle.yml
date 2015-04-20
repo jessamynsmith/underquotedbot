@@ -18,5 +18,5 @@ test:
 deployment:
     production:
       branch: master
-    heroku:
-      appname: underquotedbot
+      heroku:
+        appname: underquotedbot
