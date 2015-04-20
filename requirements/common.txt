@@ -1,3 +1,4 @@
+newrelic==2.50.0.39
 redis==2.10.3
 requests==2.6.0
 twitter==1.16.0
