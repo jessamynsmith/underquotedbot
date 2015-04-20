@@ -193,7 +193,7 @@ class TestTwitterBot(unittest.TestCase):
     def test_post_quotation_unknown_error(self):
         error = TwitterHTTPError(
             MagicMock(headers={'Content-Encoding': ''}), '', '', [])
-        error.response_data = b'{"errors": [{"code": 187}]}'
+        error.response_data = {"errors": [{"code": 187}]}
         mock_update = MagicMock(side_effect=error)
         mock_statuses = MagicMock()
         mock_statuses.update = mock_update
