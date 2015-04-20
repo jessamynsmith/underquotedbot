@@ -37,5 +37,5 @@ Run tests:
 
 Run bot:
 
-    python bin/reply_to_mentions.py  # Check twitter stream for mentions, and reply
-    python bin/post_message.py       # Post a message to twitter
+    sh bin/run_bot.sh reply_to_mentions  # Check twitter stream for mentions, and reply
+    sh bin/run_bot.sh post_message       # Post a message to twitter
