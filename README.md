@@ -16,7 +16,7 @@ Note: Must set up 5 environment variables:
 - QUOTATION_URL
 
 for the underquoted, use the following QUOTATION_URL:
-'https://underquoted.herokuapp.com/api/v1/quotations/?format=json&random=true&limit=1'
+'https://underquoted.herokuapp.com/api/v2/quotations/?random=true&limit=1'
 
 Development
 -----------
