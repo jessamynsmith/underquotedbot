@@ -1,7 +1,3 @@
-machine:
-  python:
-    version: 3.4.2
-
 dependencies:
   cache_directories:
     - "py-2.6.9"
@@ -12,7 +8,7 @@ dependencies:
 #    - bash ./.circleci/install-python-2.6.9.sh
     - bash ./.circleci/install-python-2.7.9.sh
 #    - bash ./.circleci/install-python-3.3.5.sh
-#    - bash ./.circleci/install-python-3.4.2.sh
+    - bash ./.circleci/install-python-3.4.2.sh
 
 test:
   override:
