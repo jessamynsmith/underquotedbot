@@ -2,7 +2,7 @@ underquotedbot
 ==============
 
 [![Build Status](https://circleci.com/gh/jessamynsmith/underquotedbot.svg?style=shield)](https://circleci.com/gh/jessamynsmith/underquotedbot)
-[![Coverage Status](https://coveralls.io/repos/jessamynsmith/twitterbot/badge.svg?branch=master)](https://coveralls.io/r/jessamynsmith/twitterbot?branch=master)
+[![Coverage Status](https://coveralls.io/repos/jessamynsmith/underquotedbot/badge.svg?branch=master)](https://coveralls.io/r/jessamynsmith/underquotedbot?branch=master)
 
 Replies to any twitter mentions with a quotation.
 This project is already set up to be deployed to heroku. You will need a redis addon, and probably
