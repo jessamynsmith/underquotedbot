@@ -37,5 +37,5 @@ Run tests:
 
 Run bot:
 
-    sh bin/run_bot.sh reply_to_mentions  # Check twitter stream for mentions, and reply
-    sh bin/run_bot.sh post_message       # Post a message to twitter
+    ./bin/run_bot.sh reply_to_mentions  # Check twitter stream for mentions, and reply
+    ./bin/run_bot.sh post_message       # Post a message to twitter
