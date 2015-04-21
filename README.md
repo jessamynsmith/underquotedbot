@@ -1,7 +1,7 @@
 underquotedbot
 ==============
 
-[![Build Status](https://travis-ci.org/jessamynsmith/underquotedbot.svg?branch=master)](https://travis-ci.org/jessamynsmith/underquotedbot)
+[![Build Status](https://circleci.com/gh/jessamynsmith/underquotedbot.svg?style=shield)](https://circleci.com/gh/jessamynsmith/underquotedbot)
 [![Coverage Status](https://coveralls.io/repos/jessamynsmith/twitterbot/badge.svg?branch=master)](https://coveralls.io/r/jessamynsmith/twitterbot?branch=master)
 
 Replies to any twitter mentions with a quotation.
