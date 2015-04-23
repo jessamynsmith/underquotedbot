@@ -20,8 +20,9 @@ for the underquoted, use the following QUOTATION_URL:
 
 This project is set up to be deployed to heroku, using the Heroku Scheduler and RedisToGo addons.
 There are two scheduled tasks set up:
- ./bin/run_bot.py post_message  # runs daily
- ./bin/run_bot.py reply_to_mentions  # runs every 10 minutes
+
+    ./bin/run_bot.py post_message  # runs daily
+    ./bin/run_bot.py reply_to_mentions  # runs every 10 minutes
 
 Development
 -----------
