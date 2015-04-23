@@ -26,7 +26,7 @@ class TestQuotationProvider(unittest.TestCase):
     def test_create_error_no_hashtags(self, mock_get):
         mock_get.return_value = MagicMock(status_code=500)
 
-        quotation = self.provider.create({})
+        quotation = self.provider.create({}, 140)
 
         self.assertEqual('No quotations found', quotation)
         mock_get.assert_called_with('http://localhost/?')
@@ -36,7 +36,7 @@ class TestQuotationProvider(unittest.TestCase):
         mock_get.return_value = MagicMock(status_code=500)
         mention = {'entities': {'hashtags': [{'text': 'love'}, {'text': 'hate'}]}}
 
-        quotation = self.provider.create(mention)
+        quotation = self.provider.create(mention, 140)
 
         self.assertEqual('No quotations found matching #love #hate', quotation)
         mock_get.assert_called_with('http://localhost/?&search=love'
@@ -48,7 +48,7 @@ class TestQuotationProvider(unittest.TestCase):
         mock_result.json.return_value = {'results': []}
         mock_get.return_value = mock_result
 
-        quotation = self.provider.create({})
+        quotation = self.provider.create({}, 140)
 
         self.assertEqual('No quotations found', quotation)
         mock_get.assert_called_with('http://localhost/?')
@@ -62,6 +62,6 @@ class TestQuotationProvider(unittest.TestCase):
         }]}
         mock_get.return_value = mock_result
 
-        message = self.provider.create({})
+        message = self.provider.create({}, 140)
 
         self.assertEqual('Here I stay - Henrietta', message)

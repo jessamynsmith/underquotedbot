@@ -21,10 +21,11 @@ class QuotationProvider(object):
                                     "environment variable.")
         self.BASE_URL = quotation_url
 
-    def create(self, mention):
+    def create(self, mention, max_message_length):
         """
         Create a message
         :param mention: JSON object containing mention details from Twitter
+        :param max_message_length: Maximum allowable length for created message
         :return: a message
         """
         hashtags = [x['text'] for x in mention.get('entities', {}).get('hashtags', {})]
