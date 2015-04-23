@@ -5,10 +5,10 @@ underquotedbot
 [![Coverage Status](https://coveralls.io/repos/jessamynsmith/underquotedbot/badge.svg?branch=master)](https://coveralls.io/r/jessamynsmith/underquotedbot?branch=master)
 
 Replies to any twitter mentions with a quotation.
-This project is already set up to be deployed to heroku. You will need a redis addon, and probably
-a scheduler to run the scripts in bin.
 
-Note: Must set up 5 environment variables:
+Settings are populated from environment variables. The authentication variables can be
+[obtained from your Twitter account](https://dev.twitter.com/oauth/overview/application-owner-access-tokens/).
+
 - TWITTER_CONSUMER_KEY
 - TWITTER_CONSUMER_SECRET
 - TWITTER_OAUTH_SECRET
@@ -17,6 +17,11 @@ Note: Must set up 5 environment variables:
 
 for the underquoted, use the following QUOTATION_URL:
 'https://underquoted.herokuapp.com/api/v2/quotations/?random=true&limit=1'
+
+This project is set up to be deployed to heroku, using the Heroku Scheduler and RedisToGo addons.
+There are two scheduled tasks set up:
+ ./bin/run_bot.py post_message  # runs daily
+ ./bin/run_bot.py reply_to_mentions  # runs every 10 minutes
 
 Development
 -----------
