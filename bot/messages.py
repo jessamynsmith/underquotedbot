@@ -7,7 +7,7 @@ from twitter_bot import SettingsError
 
 logging.basicConfig(filename='logs/bot.log',
                     filemode='a',
-                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                    format='%(asctime)s %(name)s %(levelname)s %(message)s',
                     level=logging.DEBUG)
 
 
