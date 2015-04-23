@@ -5,7 +5,7 @@ from bot.since_id import RedisProvider
 
 
 class UnderquotedBotSettings(Settings):
-    """ Settings for HeartBot """
+    """ Settings for UnderquotedBot """
     def __init__(self):
         super(UnderquotedBotSettings, self).__init__()
         self.MESSAGE_PROVIDER = QuotationProvider

@@ -26,19 +26,27 @@ There are two scheduled tasks set up:
 Development
 -----------
 
-Get source:
+Fork the project on github and git clone your fork, e.g.:
 
-    git clone https://github.com/jessamynsmith/underquotedbot
+    git clone https://github.com/<username>/underquotedbot.git
 
 Set up virtualenv:
 
-    mkvirtualenv underquotedbot --python=/path/to/python3
+    mkvirtualenv underquotedbot
     pip install -r requirements/development.txt
 
 Run tests:
 
     coverage run -m nose
     coverage report
+    
+Verify all supported Python versions:
+
+    tox
+    
+Check code style:
+
+    flake8
 
 Run bot:
 
