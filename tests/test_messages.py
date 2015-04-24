@@ -12,7 +12,7 @@ class TestQuotationProvider(unittest.TestCase):
         self.provider = QuotationProvider(quotation_url='http://localhost/?')
 
     @patch('os.environ.get')
-    def test_constructor_empty_mongo_env_var(self, mock_env_get):
+    def test_constructor_empty_quotation_env_var(self, mock_env_get):
         mock_env_get.return_value = ''
 
         try:
@@ -21,6 +21,14 @@ class TestQuotationProvider(unittest.TestCase):
         except SettingsError as e:
             error = "You must supply quotation_url or set the QUOTATION_URL environment variable."
             self.assertEqual(error, '{0}'.format(e))
+
+    @patch('os.environ.get')
+    def test_constructor_with_quotation_env_var(self, mock_env_get):
+        mock_env_get.return_value = 'http://localhost/?'
+
+        provider = QuotationProvider()
+
+        self.assertEqual('http://localhost/?', provider.BASE_URL)
 
     @patch('requests.get')
     def test_create_error_no_hashtags(self, mock_get):
