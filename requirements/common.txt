@@ -1,4 +1,4 @@
 redis==3.2.1
 requests==2.22.0
 twitter==1.18.0
-twitterbot==0.3.2
+twitterbot==0.3.4
