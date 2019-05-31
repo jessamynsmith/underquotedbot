@@ -38,6 +38,11 @@ Set up virtualenv:
     mkvirtualenv underquotedbot
     pip install -r requirements/development.txt
 
+In order to run unit tests, you must install and start redis, e.g. on OSX:
+
+    brew install redis
+    brew services start redis
+
 Run tests with coverage (should be 100%) and check code style:
 
     coverage run -m nose
@@ -53,7 +58,29 @@ Run bot:
 
     ./bin/run_bot.py reply_to_mentions  # Check twitter stream for mentions, and reply
     ./bin/run_bot.py post_message       # Post a message to twitter
-    
+
+   
+### Validating The Project Locally
+
+The CircleCI build can be validated locally, using the CircleCI CLI and docker. 
+
+First, install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+Then, install the CircleCI CLI, e.g. using homebrew on OSX:
+
+    brew install circleci
+
+Then, you can validate it by running this command in the terminal:
+
+    circleci config validate
+
+Once you know your config is valid, you can test it.
+The CLI allows you to run a single job from CircleCI on your desktop using docker:
+
+    circleci local execute --job build
+
+For more information, see the [CircleCI docs](https://circleci.com/docs/2.0/local-cli/#validate-a-circleci-config)
+ 
     
 Continuous Integration and Deployment
 -------------------------------------
